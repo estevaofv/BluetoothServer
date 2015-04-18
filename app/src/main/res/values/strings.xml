@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Bluetooth Comm</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="titulo_wait">AGUARDANDO INFORMAÇÃO</string>
+    <string name="title_activity_received">Received</string>
+    <string name="titulo_received">INFORMAÇÃO RECEBIDA</string>
+    <string name="title_activity_bluetooth_server">BluetoothServerActivity</string>
+    <string name="titulo_main">Escolha uma opção</string>
+    <string name="config_bluetooth">Configurar e ativar</string>
+    <string name="bluetooth_server">Bluetooth Server</string>
+    <string name="bluetooth_client">Bluetooth Client</string>
+    <string name="bt_doesnt_work">Esse dispositivo não tem adaptador Bluetooth</string>
+    <string name="title_activity_bluetooth_client">BluetoothClientActivity</string>
+    <string name="bluetooth_activ">Bluetooth Ativado com sucesso</string>
+    <string name="btActiv">Bluetooth já está ativo</string>
+    <string name="title_activity_paired_devices">PairedDevicesActivity</string>
+
+</resources>
