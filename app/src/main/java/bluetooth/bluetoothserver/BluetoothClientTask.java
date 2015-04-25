@@ -69,6 +69,7 @@ public class BluetoothClientTask  extends AsyncTask<String,String,String> {
     }
 
     private void manageConnectedSocket(BluetoothSocket mmSocket) {
+
         int x =0;
     }
 

@@ -16,5 +16,6 @@
     <string name="bluetooth_activ">Bluetooth Ativado com sucesso</string>
     <string name="btActiv">Bluetooth já está ativo</string>
     <string name="title_activity_paired_devices">PairedDevicesActivity</string>
+    <string name="title_activity_main2">Main2</string>
 
 </resources>
