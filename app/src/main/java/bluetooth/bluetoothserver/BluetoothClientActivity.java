@@ -2,20 +2,24 @@ package bluetooth.bluetoothserver;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.Set;
 
 
-public class BluetoothClientActivity extends ActionBarActivity {
+public class BluetoothClientActivity extends ActionBarActivity implements BluetoothConnTaskListener {
+
+
 
     private BluetoothClientTask clientTask;
     private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
+    private ConnectedThread connThread;
     private BluetoothDevice bluetoothDevice;
 
     @Override
@@ -27,7 +31,9 @@ public class BluetoothClientActivity extends ActionBarActivity {
         getDevice(mac);
 
         clientTask = new BluetoothClientTask(bluetoothDevice);
+        clientTask.addBluetoothConnTaskListener(this);
         clientTask.execute("");
+
 
     }
 
@@ -74,4 +80,16 @@ public class BluetoothClientActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void update(BluetoothSocket socket) {
+        connThread = new ConnectedThread(socket,null);
+        connThread.start();
+    }
+
+    public void enviar(View v){
+        connThread.write(new String("teste de escrita").getBytes());
+    }
+
+
 }

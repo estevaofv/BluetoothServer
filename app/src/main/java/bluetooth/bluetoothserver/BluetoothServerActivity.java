@@ -1,22 +1,32 @@
 package bluetooth.bluetoothserver;
 
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
-public class BluetoothServerActivity extends ActionBarActivity implements BlueToothTaskListener {
+public class BluetoothServerActivity extends ActionBarActivity implements BluetoothConnTaskListener {
 
     private BluetoothServerTask server;
-    public static final String DATA_RECEIVED = "received";
+    private ConnectedThread connThread;
+
+    private TextView tv;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_server);
+
+        tv = (TextView) findViewById(R.id.textView);
 
         server = new BluetoothServerTask();
         server.addBTListener(this);
@@ -25,15 +35,11 @@ public class BluetoothServerActivity extends ActionBarActivity implements BlueTo
 
     }
 
-
     @Override
-    public void update(String s) {
-        Intent i = new Intent(this,Received.class);
-        i.putExtra(DATA_RECEIVED,s);
-        startActivity(i);
+    public void update(BluetoothSocket socket) {
+        connThread = new ConnectedThread(socket,mHandler);
+        connThread.start();
     }
-
-
 
 
     @Override
@@ -57,4 +63,26 @@ public class BluetoothServerActivity extends ActionBarActivity implements BlueTo
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            byte[] writeBuf = (byte[]) msg.obj;
+            int begin = (int)msg.arg1;
+            int end = (int)msg.arg2;
+
+            switch(msg.what) {
+                case 1:
+                    String writeMessage = new String(writeBuf);
+
+
+                    writeMessage = writeMessage.substring(begin, end);
+                    tv.setText(writeMessage);
+                    int x = 0;
+                    break;
+            }
+        }
+    };
+
 }

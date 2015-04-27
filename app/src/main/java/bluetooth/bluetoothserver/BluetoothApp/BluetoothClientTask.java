@@ -1,4 +1,4 @@
-package bluetooth.bluetoothserver;
+package bluetooth.bluetoothserver.BluetoothApp;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import bluetooth.bluetoothserver.BluetoothConnTaskListener;
+import bluetooth.bluetoothserver.ConnectedThread;
+
 /**
  * Created by sanderson on 09/04/2015.
  */
-public class BluetoothClientTask  extends AsyncTask<String,String,BluetoothSocket> {
+public class BluetoothClientTask extends AsyncTask<String,String,BluetoothSocket> {
 
     private List<BluetoothConnTaskListener> bToothConnListeners = new ArrayList<BluetoothConnTaskListener>();
 
@@ -62,7 +65,7 @@ public class BluetoothClientTask  extends AsyncTask<String,String,BluetoothSocke
     @Override
     protected void onPostExecute(BluetoothSocket socket) {
         super.onPostExecute(socket);
-        for(BluetoothConnTaskListener l: bToothConnListeners){
+        for(bluetooth.bluetoothserver.BluetoothConnTaskListener l: bToothConnListeners){
             l.update(socket);
         }
     }

@@ -1,72 +1,70 @@
-package bluetooth.bluetoothserver;
+package bluetooth.bluetoothserver.BluetoothApp;
 
 import android.bluetooth.BluetoothSocket;
-import android.os.Bundle;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by sanderson on 10/04/2015.
+ * Created by sanderson on 25/04/2015.
  */
-public class ConnectedThread extends Thread {
+public class BluetoothIOTask extends AsyncTask<String, String, String> {
 
 
-    private Boolean running = false;
+
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
-    private Handler mHandler;
-    private static final int SUCCESS_READ = 1;
+    private boolean running = false;
 
-    public ConnectedThread(BluetoothSocket socket, Handler handler) {
+
+    public BluetoothIOTask(BluetoothSocket socket) {
+
         mmSocket = socket;
-        mHandler = handler;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
+
         try {
             tmpIn = socket.getInputStream();
             tmpOut = socket.getOutputStream();
         } catch (IOException e) { }
+
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
         running = true;
     }
 
 
+    @Override
+    protected String doInBackground(String... params) {
 
-    public void run() {
         byte[] buffer = new byte[1024];
         int begin = 0;
         int bytes = 0;
         while (true) {
             try {
-
-                // Read from the InputStream
                 bytes = mmInStream.read(buffer);
-                // Send the obtained bytes to the UI activity
-                // String data = new String(buffer,0,bytes);
-                mHandler.obtainMessage(1, 0,bytes, buffer).sendToTarget();
-                //mHandler.handleMessage(msgObj);
-
+                String data = new String(buffer,0,bytes);
             } catch (IOException e) {
-
                 break;
             }
         }
+
+        return null;
+    }
+
+    public void read(){
+
     }
 
     public void write(byte[] bytes) {
         try {
             mmOutStream.write(bytes);
-            mmOutStream.flush();
-        } catch (IOException e) {
-            String entrou = "";
-        }
+        } catch (IOException e) { }
     }
 
     public void close() {
@@ -77,7 +75,3 @@ public class ConnectedThread extends Thread {
     }
 
 }
-
-
-
-

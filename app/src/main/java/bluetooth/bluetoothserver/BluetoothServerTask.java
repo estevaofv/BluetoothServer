@@ -6,8 +6,6 @@ import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,9 +13,9 @@ import java.util.UUID;
 /**
  * Created by sanderson on 08/04/2015.
  */
-public class BluetoothServerTask extends AsyncTask<String,String,String> {
+public class BluetoothServerTask extends AsyncTask<String,String,BluetoothSocket> {
 
-    private List<BlueToothTaskListener> bToothListeners = new ArrayList<BlueToothTaskListener>();
+    private List<BluetoothConnTaskListener> bToothListeners = new ArrayList<BluetoothConnTaskListener>();
 
     private BluetoothServerSocket mmServerSocket;
     private BluetoothAdapter mBluetoothAdapter;
@@ -40,9 +38,7 @@ public class BluetoothServerTask extends AsyncTask<String,String,String> {
 
 
     @Override
-    protected String doInBackground(String... params) {
-        String result = "";
-
+    protected BluetoothSocket doInBackground(String... params) {
 
         BluetoothSocket socket = null;
         // Keep listening until exception occurs or a socket is returned
@@ -58,21 +54,18 @@ public class BluetoothServerTask extends AsyncTask<String,String,String> {
                 // Do work to manage the connection (in a separate thread)
                 try {
                     //result = Converter.inputStremToString(socket.getInputStream());
-                    manageConnectedSocket(socket);
                     mmServerSocket.close();
-                    result = "conectou";
                     break;
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
             }else{
-                result = "não conectou";
+
             }
         }
 
-        return result;
+        return socket;
 
     }
 
@@ -80,23 +73,19 @@ public class BluetoothServerTask extends AsyncTask<String,String,String> {
 
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(BluetoothSocket s) {
         super.onPostExecute(s);
-        for(BlueToothTaskListener btl : bToothListeners){
+        for(BluetoothConnTaskListener btl : bToothListeners){
             btl.update(s);
         }
     }
 
-    private void manageConnectedSocket(BluetoothSocket socket) {
-        try {
-            InputStream is = socket.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void addBTListener(BlueToothTaskListener bt){
+
+    public void addBTListener(BluetoothConnTaskListener bt){
         bToothListeners.add(bt);
     }
 
 }
+
+
