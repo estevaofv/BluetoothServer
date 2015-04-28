@@ -3,8 +3,8 @@ package bluetooth.bluetoothserver;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends ActionBarActivity {
 
 
     private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -32,8 +32,8 @@ public class MainActivity extends ActionBarActivity{
         disableButtons();
 
         if (mBluetoothAdapter == null) {
-            Toast.makeText(this,R.string.bt_doesnt_work,Toast.LENGTH_LONG).show();
-        }else{
+            Toast.makeText(this, R.string.bt_doesnt_work, Toast.LENGTH_LONG).show();
+        } else {
             btn_config.setEnabled(true);
             if (mBluetoothAdapter.isEnabled()) {
                 enableButtonsBlueTooth();
@@ -43,22 +43,22 @@ public class MainActivity extends ActionBarActivity{
     }
 
 
-    public void configBT(View v){
+    public void configBT(View v) {
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }else{
+        } else {
             Toast.makeText(this, R.string.btActiv, Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    public void goToBluetoothServer(View v){
-        Intent i = new Intent(this, BluetoothServerActivity.class);
+    public void goToBluetoothServer(View v) {
+        Intent i = new Intent(this, BluetoothServerActivityConn.class);
         startActivity(i);
     }
 
-    public void goToBluetoothClient(View v){
+    public void goToBluetoothClient(View v) {
         Intent i = new Intent(this, PairedDevicesActivity.class);
         startActivity(i);
     }
@@ -66,28 +66,28 @@ public class MainActivity extends ActionBarActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUEST_ENABLE_BT){
-            if(resultCode== Activity.RESULT_OK){
+        if (requestCode == REQUEST_ENABLE_BT) {
+            if (resultCode == Activity.RESULT_OK) {
                 enableButtonsBlueTooth();
-                Toast.makeText(this,R.string.bluetooth_activ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.bluetooth_activ, Toast.LENGTH_SHORT).show();
             }
         }
 
     }
 
-    private void getButtons(){
-        btn_config = (Button)findViewById(R.id.btn_config_bt);
-        btn_server = (Button)findViewById(R.id.btn_bt_server);
-        btn_client = (Button)findViewById(R.id.btn_bt_client);
+    private void getButtons() {
+        btn_config = (Button) findViewById(R.id.btn_config_bt);
+        btn_server = (Button) findViewById(R.id.btn_bt_server);
+        btn_client = (Button) findViewById(R.id.btn_bt_client);
     }
 
-    private void disableButtons(){
+    private void disableButtons() {
         btn_config.setEnabled(false);
         btn_server.setEnabled(false);
         btn_client.setEnabled(false);
     }
 
-    private void enableButtonsBlueTooth(){
+    private void enableButtonsBlueTooth() {
         btn_server.setEnabled(true);
         btn_client.setEnabled(true);
     }
